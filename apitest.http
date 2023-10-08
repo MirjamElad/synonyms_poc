@@ -1,0 +1,25 @@
+@endpoint = http://localhost:3000/api/synonyms/
+
+###
+POST {{endpoint}}
+Content-Type: application/json
+
+ {
+    "setSynonyms": "clean,wash-up,undirt"
+ }
+
+
+###
+#  @name getRes
+GET {{endpoint}}clean
+
+###
+POST {{endpoint}}
+Content-Type: application/json
+
+ {
+    "setSynonyms": "dirty,kI8/s,unwashed"
+ }
+
+###
+GET {{endpoint}}dirty
