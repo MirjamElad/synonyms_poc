@@ -22,13 +22,13 @@ const setSynonyms = (synonymsPerWord: SynonymsPerWord, stores = { data }) => {
 
 export const addSynonym = ({word}: {word: string}, stores = { data }) => {
     if (!(data.serverSynonyms?.includes(word) || data.addedSynonyms?.includes(word))) {
-        data.status = 'edited';
         if (data.deletedSynonyms?.includes(word)) {
             data.deletedSynonyms = data.deletedSynonyms.filter((w) => w !== word);
             data.serverSynonyms.push(word); 
         } else {
             data.addedSynonyms.push(word);
-        }      
+        }
+        data.status = data.addedSynonyms.length || data.deletedSynonyms.length ? 'edited' : 'ready';
     }
 }
 export const removeSynonym = ({word}: {word: string}, stores = { data }) => {
