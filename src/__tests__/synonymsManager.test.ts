@@ -13,6 +13,20 @@ describe("synonymManager test", () => {
     expect(synList_of_undirt).toEqual(["clean", "wash", "undirt"]);
   });
 
+  it("Removing a group of words as each other's synonyms works as expected!", () => {
+    synonymManager.clear();
+    synonymManager.setSynonyms(["clean", "wash", "undirt"]);
+    synonymManager.setSynonyms(["clean", "wash-up"], ["undirt"]);
+    const synList_of_clean = synonymManager.getSynonymsOfWord("clean");
+    const synList_of_wash = synonymManager.getSynonymsOfWord("wash");
+    const synList_of_wash_up = synonymManager.getSynonymsOfWord("wash-up");
+    const synList_of_undirt = synonymManager.getSynonymsOfWord("undirt");
+    expect(synList_of_clean).toEqual(["clean", "wash", "wash-up"]);
+    expect(synList_of_wash).toEqual(["clean", "wash", "wash-up"]);
+    expect(synList_of_wash_up).toEqual(["clean", "wash", "wash-up"]);
+    expect(synList_of_undirt).toEqual([]);
+  });
+
   it("setSynonyms is transitive", () => {
     synonymManager.clear();
     synonymManager.setSynonyms(["clean", "wash"]);

@@ -19,15 +19,25 @@ class SynonymManager {
     };
 
     // NB: implemented to be read efficient as opposed to write efficient!
-    setSynonyms(wordList: string[]): void {
-        wordList = wordList.map(this.formatWord).filter(this.validWord);
+    setSynonyms(wordList: string[], toDeleteList: string[] = []): void {
+        toDeleteList = toDeleteList.map(this.formatWord).filter(this.validWord);
+        wordList = wordList.map(this.formatWord).filter(this.validWord).filter((w) => !toDeleteList.includes(w));
         if (wordList.length) {
+            toDeleteList.forEach((dw) => {
+                if (this.synonyms.has(dw)) {
+                    //Transivity means removing any existing synonym X from Y is removing it from the whole
+                    this.synonyms.delete(dw);
+                }
+            })
             let largestSet = new Set<string>([]);
             wordList.forEach(word => {
                 if (!this.synonyms.has(word)) {
                     this.synonyms.set(word, new Set([word]));
                 } else {
                     const currentSet = this.synonyms.get(word)!;
+                    for(const w of toDeleteList) {
+                        currentSet.delete(w);
+                    }
                     if (currentSet.size > largestSet.size) {
                         largestSet = currentSet;
                     }

@@ -1,5 +1,5 @@
 //TODO: How about a config file/component!?
-const _TIMEOUT_ = 4000;
+const _TIMEOUT_ = 5000;
 
 //https://stackoverflow.com/questions/46946380/fetch-api-request-timeout
 function withTimeout(ms: number, promise: Promise<any>) {
@@ -52,12 +52,12 @@ export const GET = async (
             if (r.ok) {
                 return r.json();
             } else {
-                throw new Error(r.statusText || 'Something went wrong!');
+                throw new Error(r.statusText || 'Something went wrong! Please try later!');
             }
         })
         .then(onSuccess)
         .catch(onFailure)
-    );
+    ).catch(onFailure);
 };
 
 export const POST = (
@@ -77,9 +77,9 @@ export const POST = (
             if (r.ok) {
                 return r.json();
             } else {
-                throw new Error(r.statusText || 'Something went wrong!');
+                throw new Error(r.statusText || 'Something went wrong! Please try later!');
             }
         })
         .then(onSuccess)
         .catch(onFailure)
-    );
+    ).catch(onFailure);
