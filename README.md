@@ -45,7 +45,13 @@ To access and make use of the aforementioned "entry points" from the front end. 
 These two functions provide a succinct way to call the REST endpoints where their signature define the input to the REST end point and two callback functions **onSuccess** & **onFailure**.
 
 ### Views structure
-TODO
+The app presents its self as follows. First you have an input where the user enters the word to get or set synonyms for (look at *app/components/**SearchBox***). After the user enters a valid word and hits enter/go. The word appears below with all its synonyms (if it has already synonyms in the system). The user may enter new synonyms or delete old ones and save her work  (look at *app/components/SynonymEditor/**SynonymCmp***). 
+
+There are a number of other components under *app/components/**SynonymEditor**/* that make up the **SynonymEditor** spoken about above. Users can view the listed synonyms that were retrieved from the server (backend) or that they added them selves. Users can also delete any synonyms. If they delete a synonym coming from the server they also have the ability to undelete it (or re-create any synonym by re-typing it ..etc). If the user made any changes to a word synonyms, they may either save those changes or discard them!
+
+There also other components under **app/components/** to show a spinner while the app is reaching out to the server and a guide to provide some context/insight/guidance to the user on how to proceed. 
+
+Indeed, the app could be in one of several status depending on where is the user in her journey. We have distinct states the app can be in. 
+These are: **initial**, **searching**, **ready**, **edited**, **posting** or **error**.
 
 ### State management
-TODO
