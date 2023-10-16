@@ -51,7 +51,30 @@ There are a number of other components under *app/components/**SynonymEditor**/*
 
 There also other components under **app/components/** to show a spinner while the app is reaching out to the server and a guide to provide some context/insight/guidance to the user on how to proceed. 
 
-Indeed, the app could be in one of several status depending on where is the user in her journey. We have distinct states the app can be in. 
+Indeed, the app could be in one of several status depending on where is the user in her journey. We have distinct statuses the app can be in. 
 These are: **initial**, **searching**, **ready**, **edited**, **posting** or **error**.
 
+The app starts in the **initial** status, when the user picks a word to manage synonyms for the app moves to **searching** while it is bringing any saved anonymous for that word. When searching is done, the app moves to the **ready** status where the user is able to view but also edit synonyms (Here the user can also chose to start managing some other word's synonyms by re-using the search box).
+If the user does any changes (adding and/or removing) to the word's synonyms, she is able to save those changes to the server or alternatively discard/cancel her changes. If she decides to save her changes the app moves to the **posting** status and moves back to the **ready** status when the posting to the server is done. In case she decides to discard her changes, all these changes are discarded and the app directly moves to the **ready** status.
+In case of an unexpected error, the app moves to the **error** status and back to the appropriate status according to the general state of our application.
+
+Note that all these views have generic react code except of the usage of two functions. Namely, **trigger** from **adax** and **useSunc** from **adax-react**. Actually, **useSunc** is only used in the main page.tsx but it is usually used in multiple views. We use **trigger** to wrap any function that manipulates the app's state and **useSunc** can be used by any view component to subscribe to a query of the state. This makes the view re-render whenever the result of that query changes. More on this later. 
+
 ### State management
+After playing with this mini app and reading the above explanations. Let's move how we manage the state and logic of our app. For that we need to inspect the code under **app/client-state/**.
+Here we have **data.ts** that holds the full state of our app so that it is enough to describe the state of our app at any point in the progress of its usage. In addition to the status described above, it holds the word we are managing synonyms for, its synonyms saved on the server, any temporarily added or removed synonyms (temporarily as in not saved on the server yet and are thus discardable on the client side) as well as some helper functions to "*declaratively*" managing the **status**!
+
+To access and manipulate the app state in **data.ts** one has to go through "*its*" **facade.ts**.
+In there you have the functions needed to mutate the **app state** and thus operate our mini web app. Those functions accept some input object with which to update the state and also have a reference to the state (or data) that is to be mutated.
+Here we have all the functions needed to move our app from status to status and update the app's state/data accordingly.
+
+The code under **client-state** is generic JavaScript (or TypeScript in this case) and does not contain any react or DOM specific code. We could have called the folder **vanilla** instead of **client-state**.
+As said earlier, this code is all we need to manipulate the state of the app. We only need to wire the lifecycle of our (react) views with the app's state. 
+The facade has both mutator and query functions with which to manipulate and respectively query the state (or data) on changes. But how do we cause the query functions to run when the underlying data undergoes "relevant" changes. Here comes **addRule** imported from **adax**, it specifies what query might need to run on what mutation. 
+
+Mutators and queries are used on the views where mutators are wrapped with **trigger** and queries with **useSunc** to ensure relevant views re-render when needed.
+
+We are also using **trigger** within the facade as it is needed in the callbacks after calling the server. Naturally, we do need to update the app's state with what the server returns. Thus, we need to use  **trigger** to cause any subscribing view to rerender when necessary.
+
+Note here the only non-generic JavaScript/TypeScript code is in the form of two functions: **trigger** & **addRule** both imported from **adax**. 
+
