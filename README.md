@@ -69,7 +69,7 @@ In there you have the functions needed to mutate the **app state** and thus oper
 Here we have all the functions needed to move our app from status to status and update the app's state/data accordingly.
 
 The code under **client-state** is generic JavaScript (or TypeScript in this case) and does not contain any react or DOM specific code. We could have called the folder **vanilla** instead of **client-state**.
-As said earlier, this code is all we need to manipulate the state of the app. We only need to wire the lifecycle of our (react) views with the app's state. 
+As said earlier, this code is all we need to manipulate the state of the app. We only need to wire the lifecycle of our (react in this example) views with the app's state. 
 The facade has both mutator and query functions with which to manipulate and respectively query the state (or data) on changes. But how do we cause the query functions to run when the underlying data undergoes "relevant" changes. Here comes **addRule** imported from **adax**, it specifies what query might need to run on what mutation. 
 
 Mutators and queries are used on the views where mutators are wrapped with **trigger** and queries with **useSunc** to ensure relevant views re-render when needed.
@@ -77,4 +77,5 @@ Mutators and queries are used on the views where mutators are wrapped with **tri
 We are also using **trigger** within the facade as it is needed in the callbacks after calling the server. Naturally, we do need to update the app's state with what the server returns. Thus, we need to use  **trigger** to cause any subscribing view to rerender when necessary.
 
 Note here the only non-generic JavaScript/TypeScript code is in the form of two functions: **trigger** & **addRule** both imported from **adax**. 
+
 
