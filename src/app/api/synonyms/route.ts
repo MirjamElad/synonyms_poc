@@ -5,7 +5,6 @@ import synonymManager from "../../lib/synonymsManager";
 export async function POST(req: Request) {
     const { synonyms, deleteSynonyms } = await req.json();
     const newSynonyms = synonyms?.split(',');
-    const oldSynonyms = deleteSynonyms?.split(',') || [];
     if (synonyms?.length) {
         synonymManager.setSynonyms(newSynonyms, deleteSynonyms?.split(','));
         const res = synonymManager.getSynonymsPerWord([newSynonyms[0]]);

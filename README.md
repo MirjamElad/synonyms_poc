@@ -1,8 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+# Fictuous synonyms editor app 
+This repo contains a small fictuous web app for testing purposes.
+The mini app allow users to enter a word and look up its synonyms. It should also be possible to add (and remove) new synonyms to the given word!
+
+If the word A is a synonym of the word B, and B is a synonym of the word C then both A and C are necessarily synonyms as well! There is no notion of context or weight of how close (synonymous) are two words. If any number of words are synonyms they are equivalent (completely synonymous) to each other!
+Thus, if any words are synonymous then they belong to exact same group of synonyms. Similarily, any word can only belong to a single group of synonyms. 
+
+Note that the web app has both a back end and a front end with no on-disk persistence as synonyms are held memory!
 
 ## Getting Started
+Before reading the code, it is advised to first to play with the web app and get a sense of what it's doing!
 
-First, run the development server:
+You can either directly access both code and play with the app [here: synonyms_poc](https://stackblitz.com/github/MirjamElad/synonyms_poc?file=src%2Fapp%2Fpage.tsx) with your browser 
+
+Alternatively, you can pull from [github](https://github.com/MirjamElad/synonyms_poc) and run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +25,27 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) with your browser 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Teck stack
+The app is built with NextJS (13.5.4). To manage state on the front end, the **adax** & **adax-react** libraries are used (more on these below). For styling and animation **tailwind** & **tailwindcss-animated** have been used respectively.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Code structure
 
-## Learn More
+### Backend
 
-To learn more about Next.js, take a look at the following resources:
+The code managing the synonyms is located under *app/lib/**synonymManager*** where the exported **synonymManager** singleton is responsible for managing the synonyms by allowing safely adding, removing and retrieving synonyms as per the requirements discussed above.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The **synonymManager** is used through a REST interface with a **GET** & **POST** "entry points" are defined under *app/api/synonyms/[wordList]/**route.ts*** and *app/api/synonyms/**route.ts*** respectively.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Frontend
+#### Calling the backend
+To access and make use of the aforementioned "entry points" from the front end. We have a couple of helper functions conviniently named **GET** & **POST** and available at *app/lib/**appClient***.
 
-## Deploy on Vercel
+These two functions provide a succinct way to call the REST endpoints where their signature define the input to the REST end point and two callback functions **onSuccess** & **onFailure**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Views structure
+TODO
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### State management
+TODO

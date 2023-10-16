@@ -21,7 +21,7 @@ export const ActionBar = ({status}: {status?: Status}) => {
           Save
         </button>
         <button type="submit"  onClick={(e) => handle(e, 'discard')}
-          className="bg-gray-800 text-white p-2 rounded text-sm w-auto float-right">
+          className="bg-gray-600 text-white p-2 rounded text-sm w-auto float-right">
           Discard
         </button>
       </div>
