@@ -1,6 +1,6 @@
 
-# Fictuous synonyms editor app 
-This repo contains a small fictuous web app for testing purposes.
+# Fictitious synonyms editor app 
+This repo contains a small fictitious web app for testing purposes.
 The mini app allow users to enter a word and look up its synonyms. It should also be possible to add (and remove) new synonyms to the given word!
 
 If the word A is a synonym of the word B, and B is a synonym of the word C then both A and C are necessarily synonyms as well! There is no notion of context or weight of how close (synonymous) are two words. If any number of words are synonyms they are equivalent (completely synonymous) to each other!
